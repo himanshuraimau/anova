@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+:root {
+  --color-cream: #fffbeb;
+  --color-burgundy: #991b1b;
+  --color-gold: #f59e0b;
+  --color-dark-brown: #292524;
+  --background: #fffbeb;
+  --foreground: #292524;
+  --primary: #991b1b;
+  --primary-foreground: #fffbeb;
+  --accent: #f59e0b;
+  --accent-foreground: #292524;
+  --border: #e7d4b8;
+  --muted: #d2b48c;
+  --muted-foreground: #654321;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #1a1410;
+  --foreground: #f5e6d3;
+  --primary: #d4623a;
+  --primary-foreground: #1a1410;
+  --accent: #f4b942;
+  --accent-foreground: #1a1410;
+  --border: #3d2f24;
+  --muted: #6b5344;
+  --muted-foreground: #b8a89c;
+}
+
+@theme inline {
+  --font-serif: 'Georgia', 'Palatino', serif;
+  --font-sans: 'Geist', 'Geist Fallback', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-foreground;
+  }
+  p, span, a, li {
+    @apply font-serif;
+  }
+}
+
+.MathJax {
+  @apply text-foreground;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.reduce-motion {
+  animation-duration: 0.1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.1ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
