@@ -45,29 +45,31 @@ export const NotesPanel = ({ isOpen, onClose }: NotesPanelProps) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <Card
-        className="border-2 border-primary w-full max-w-2xl max-h-96 flex flex-col bg-background"
+        className="border-2 border-primary w-full max-w-2xl h-[500px] max-h-[80vh] flex flex-col bg-background shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border">
+        <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
           <h2 className="font-serif font-bold text-burgundy text-lg">My Notes</h2>
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground text-xl font-bold"
+            className="text-muted-foreground hover:text-foreground text-xl font-bold w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded transition-colors"
           >
             ×
           </button>
         </div>
 
-        <Textarea
-          value={notes}
-          onChange={handleChange}
-          className="flex-1 m-4 font-serif border-2 border-border rounded resize-none"
-          placeholder="Add your notes here. They'll be saved automatically..."
-        />
+        <div className="flex-1 p-4 overflow-hidden">
+          <Textarea
+            value={notes}
+            onChange={handleChange}
+            className="w-full h-full font-serif border-2 border-border rounded resize-none focus:ring-2 focus:ring-primary focus:border-primary"
+            placeholder="Add your notes here. They'll be saved automatically..."
+          />
+        </div>
 
-        <div className="flex gap-2 p-4 border-t border-border justify-between">
+        <div className="flex gap-2 p-4 border-t border-border justify-between shrink-0">
           <Button
             onClick={handleClear}
             variant="destructive"

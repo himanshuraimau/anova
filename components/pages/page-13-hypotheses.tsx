@@ -5,7 +5,6 @@ import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
 import { InteractiveSlider } from '@/components/interactive-slider'
-import { MathDisplay } from '@/components/math-display'
 
 export const Page13ANOVAHypotheses = () => {
   const { accessibility } = useAnova()
@@ -43,8 +42,8 @@ export const Page13ANOVAHypotheses = () => {
             <h2 className="text-2xl font-serif font-bold text-burgundy mb-4">Null Hypothesis (H₀)</h2>
             <div className="bg-cream p-6 rounded border-2 border-primary mb-4">
               <p className="font-serif text-center text-lg mb-3">All group means are equal:</p>
-              <div className="text-center text-xl md:text-2xl">
-                <MathDisplay formula={`\\mu_1 = \\mu_2 = \\cdots = \\mu_{${k}}`} display={true} />
+              <div className="text-center text-xl md:text-2xl font-serif font-bold text-burgundy">
+                μ<sub>1</sub> = μ<sub>2</sub> = ⋯ = μ<sub>{k}</sub>
               </div>
             </div>
 
@@ -62,8 +61,8 @@ export const Page13ANOVAHypotheses = () => {
             <h2 className="text-2xl font-serif font-bold text-burgundy mb-4">Alternative Hypothesis (Hₐ)</h2>
             <div className="bg-cream p-6 rounded border-2 border-accent mb-4">
               <p className="font-serif text-center text-lg mb-3">At least one group mean differs:</p>
-              <div className="text-center text-lg md:text-xl">
-                <MathDisplay formula="\text{Not all } \mu_i \text{ are equal}" display={true} />
+              <div className="text-center text-lg md:text-xl font-serif font-bold text-burgundy">
+                Not all μ<sub>i</sub> are equal
               </div>
             </div>
 
@@ -82,14 +81,14 @@ export const Page13ANOVAHypotheses = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 bg-cream rounded border border-border">
                 <p className="font-serif text-sm text-muted-foreground mb-2">H₀:</p>
-                <div className="text-center">
-                  <MathDisplay formula={`\\tau_1 = \\tau_2 = \\cdots = \\tau_{${k}} = 0`} />
+                <div className="text-center font-serif font-bold text-burgundy">
+                  τ<sub>1</sub> = τ<sub>2</sub> = ⋯ = τ<sub>{k}</sub> = 0
                 </div>
               </div>
               <div className="p-4 bg-cream rounded border border-border">
                 <p className="font-serif text-sm text-muted-foreground mb-2">Hₐ:</p>
-                <div className="text-center">
-                  <MathDisplay formula="\text{Not all } \tau_i = 0" />
+                <div className="text-center font-serif font-bold text-burgundy">
+                  Not all τ<sub>i</sub> = 0
                 </div>
               </div>
             </div>

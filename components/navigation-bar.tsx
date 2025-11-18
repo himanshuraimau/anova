@@ -5,7 +5,7 @@ import { useAnova } from '@/lib/anova-context'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Toggle } from '@/components/ui/toggle'
-import { ChevronDown, Play, Pause, VolumeX, Contrast, FileText, Bookmark } from 'lucide-react'
+import { ChevronDown, Contrast, FileText, Bookmark } from 'lucide-react'
 import { BookmarksIndicator } from '@/components/bookmarks-indicator'
 import { NotesPanel } from '@/components/notes-panel'
 
@@ -119,31 +119,6 @@ export const NavigationBar = () => {
               </div>
             )}
 
-            {/* Animation controls */}
-            <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant={animationControls.isPlaying ? 'default' : 'outline'}
-                onClick={() => setAnimationControls({ isPlaying: !animationControls.isPlaying })}
-                title={animationControls.isPlaying ? 'Pause' : 'Play'}
-                className="font-serif"
-              >
-                {animationControls.isPlaying ? <Pause size={14} /> : <Play size={14} />}
-              </Button>
-
-              {/* Speed control */}
-              <select
-                value={animationControls.speed}
-                onChange={e => setAnimationControls({ speed: parseFloat(e.target.value) as 0.5 | 1 | 2 })}
-                className="text-xs bg-background border border-border rounded px-1 py-1 font-serif"
-                title="Animation speed"
-              >
-                <option value={0.5}>0.5x</option>
-                <option value={1}>1x</option>
-                <option value={2}>2x</option>
-              </select>
-            </div>
-
             {/* Notes and Bookmarks */}
             <div className="flex items-center gap-2">
               <Button
@@ -165,9 +140,9 @@ export const NavigationBar = () => {
                 onPressedChange={pressed => setAccessibility({ reduceMotion: pressed })}
                 title="Reduce motion"
                 size="sm"
-                className="w-9 h-9"
+                className="w-9 h-9 text-xs font-serif"
               >
-                <VolumeX size={14} />
+                M-
               </Toggle>
 
               <select

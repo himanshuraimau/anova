@@ -5,7 +5,6 @@ import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
 import { InteractiveSlider } from '@/components/interactive-slider'
-import { MathDisplay } from '@/components/math-display'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 
 export const Page5MeansModel = () => {
@@ -44,14 +43,14 @@ export const Page5MeansModel = () => {
           <Card className="border-2 border-primary p-6 bg-background">
             <div className="text-center mb-4">
               <p className="font-serif font-semibold text-muted-foreground mb-2">Basic Model:</p>
-              <div className="text-xl md:text-2xl font-serif text-burgundy">
-                <MathDisplay formula="Y_{{ij}} = \mu + \varepsilon_{{ij}}" display={true} />
+              <div className="text-2xl md:text-3xl font-serif text-burgundy font-bold">
+                Y<sub>ij</sub> = μ + ε<sub>ij</sub>
               </div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 mt-6">
               <div className="text-center p-3 bg-cream rounded border border-border">
-                <p className="font-serif text-sm text-muted-foreground">Y_{'{ij}'}</p>
+                <p className="font-serif text-sm text-muted-foreground">Y<sub>ij</sub></p>
                 <p className="font-serif text-sm text-burgundy font-bold">Observation</p>
               </div>
               <div className="text-center p-3 bg-cream rounded border border-border">
@@ -59,7 +58,7 @@ export const Page5MeansModel = () => {
                 <p className="font-serif text-sm text-burgundy font-bold">Population Mean</p>
               </div>
               <div className="text-center p-3 bg-cream rounded border border-border">
-                <p className="font-serif text-sm text-muted-foreground">ε_{'{ij}'}</p>
+                <p className="font-serif text-sm text-muted-foreground">ε<sub>ij</sub></p>
                 <p className="font-serif text-sm text-burgundy font-bold">Error Term</p>
               </div>
             </div>
@@ -110,12 +109,12 @@ export const Page5MeansModel = () => {
           <AnimatedContainer animation="fadeIn" delay={0.4}>
             <Card className="border-2 border-accent p-6 bg-background">
               <h2 className="text-lg font-serif font-bold text-burgundy mb-4">Normal Distribution</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={normalData}>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={normalData} margin={{ top: 30, right: 20, bottom: 20, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#d2b48c" />
                   <XAxis dataKey="x" stroke="#292524" />
                   <YAxis stroke="#292524" />
-                  <Tooltip formatter={(v) => v.toFixed(4)} contentStyle={{ backgroundColor: '#fffbeb', border: '2px solid #991b1b' }} />
+                  <Tooltip formatter={(v: any) => (typeof v === 'number' ? v.toFixed(4) : String(v))} contentStyle={{ backgroundColor: '#fffbeb', border: '2px solid #991b1b' }} />
                   <ReferenceLine x={mu} stroke="#f59e0b" strokeDasharray="5 5" label={{ value: `μ=${mu}`, position: 'top', fill: '#991b1b' }} />
                   <Line type="monotone" dataKey="y" stroke="#991b1b" dot={false} isAnimationActive={true} />
                 </LineChart>
@@ -128,7 +127,7 @@ export const Page5MeansModel = () => {
         <Card className="border-2 border-gold p-6 bg-background">
           <h3 className="text-lg font-serif font-bold text-burgundy mb-3">Key Insight</h3>
           <p className={`font-serif text-foreground ${textSizeClass}`}>
-            In the means model, we assume all observations come from the same normal distribution with mean μ. The differences between observations are explained by random error (ε_{'{ij}'}).
+            In the means model, we assume all observations come from the same normal distribution with mean μ. The differences between observations are explained by random error (ε<sub>ij</sub>).
           </p>
         </Card>
       </div>

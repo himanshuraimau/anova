@@ -5,7 +5,6 @@ import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
 import { InteractiveSlider } from '@/components/interactive-slider'
-import { MathDisplay } from '@/components/math-display'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts'
 
 export const Page6FactorModel = () => {
@@ -38,14 +37,14 @@ export const Page6FactorModel = () => {
           <Card className="border-2 border-primary p-6 bg-background">
             <div className="text-center mb-4">
               <p className="font-serif font-semibold text-muted-foreground mb-2">Factor Effect Model:</p>
-              <div className="text-xl md:text-2xl font-serif text-burgundy">
-                <MathDisplay formula="Y_{{ij}} = \mu + \tau_i + \varepsilon_{{ij}}" display={true} />
+              <div className="text-2xl md:text-3xl font-serif text-burgundy font-bold">
+                Y<sub>ij</sub> = μ + τ<sub>i</sub> + ε<sub>ij</sub>
               </div>
             </div>
 
             <div className="grid md:grid-cols-4 gap-3 mt-6">
               <div className="text-center p-3 bg-cream rounded border border-border">
-                <p className="font-serif text-sm text-muted-foreground">Y_{'{ij}'}</p>
+                <p className="font-serif text-sm text-muted-foreground">Y<sub>ij</sub></p>
                 <p className="font-serif text-xs text-burgundy font-bold">Observation</p>
               </div>
               <div className="text-center p-3 bg-cream rounded border border-border">
@@ -53,11 +52,11 @@ export const Page6FactorModel = () => {
                 <p className="font-serif text-xs text-burgundy font-bold">Grand Mean</p>
               </div>
               <div className="text-center p-3 bg-cream rounded border border-border">
-                <p className="font-serif text-sm text-muted-foreground">τ_i</p>
+                <p className="font-serif text-sm text-muted-foreground">τ<sub>i</sub></p>
                 <p className="font-serif text-xs text-burgundy font-bold">Treatment Effect</p>
               </div>
               <div className="text-center p-3 bg-cream rounded border border-border">
-                <p className="font-serif text-sm text-muted-foreground">ε_{'{ij}'}</p>
+                <p className="font-serif text-sm text-muted-foreground">ε<sub>ij</sub></p>
                 <p className="font-serif text-xs text-burgundy font-bold">Error Term</p>
               </div>
             </div>
@@ -126,7 +125,7 @@ export const Page6FactorModel = () => {
           <Card className="border-2 border-gold p-4 bg-background">
             <h3 className="font-serif font-bold text-burgundy mb-2">Null Hypothesis (H₀)</h3>
             <p className={`font-serif text-foreground ${textSizeClass}`}>
-              All treatment effects are zero: <MathDisplay formula="\tau_1 = \tau_2 = \tau_3 = 0" />
+              All treatment effects are zero: τ<sub>1</sub> = τ<sub>2</sub> = τ<sub>3</sub> = 0
             </p>
             <p className="font-serif text-xs text-muted-foreground mt-2">Groups have same mean</p>
           </Card>
@@ -141,7 +140,7 @@ export const Page6FactorModel = () => {
         <Card className="border-2 border-gold p-6 bg-background">
           <h3 className="text-lg font-serif font-bold text-burgundy mb-3">Key Difference from Means Model</h3>
           <p className={`font-serif text-foreground ${textSizeClass}`}>
-            The factor effect model allows different groups to have different means. The treatment effect (τ_i) captures how much group i differs from the grand mean.
+            The factor effect model allows different groups to have different means. The treatment effect (τ<sub>i</sub>) captures how much group i differs from the grand mean.
           </p>
         </Card>
       </div>

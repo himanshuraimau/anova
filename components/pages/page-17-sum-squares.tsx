@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
-import { InteractiveSlider } from '@/components/interactive-slider'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts'
 
 export const Page17SumOfSquares = () => {
@@ -60,7 +59,7 @@ export const Page17SumOfSquares = () => {
             <Card className="border-2 border-primary p-6 bg-background space-y-4">
               <div>
                 <h2 className="font-serif font-bold text-burgundy mb-3">Formula</h2>
-                <div className="bg-cream p-4 rounded border border-primary text-center font-serif font-mono text-burgundy mb-4">
+                <div className="bg-cream p-4 rounded border border-primary text-center font-mono text-burgundy mb-4">
                   SST = Σ Σ (Y<sub>ij</sub> - ȳ..)²
                 </div>
               </div>
@@ -88,7 +87,7 @@ export const Page17SumOfSquares = () => {
             <Card className="border-2 border-accent p-6 bg-background">
               <h2 className="font-serif font-bold text-burgundy mb-4">Deviation Visualization</h2>
               <ResponsiveContainer width="100%" height={300}>
-                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                <ScatterChart data={scatterData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#d2b48c" />
                   <XAxis type="number" dataKey="x" stroke="#292524" />
                   <YAxis type="number" stroke="#292524" />
@@ -98,7 +97,7 @@ export const Page17SumOfSquares = () => {
                     contentStyle={{ backgroundColor: '#fffbeb', border: '2px solid #991b1b' }}
                     formatter={(v) => v.toFixed(2)}
                   />
-                  <Scatter data={scatterData} fill="#991b1b" />
+                  <Scatter dataKey="y" fill="#991b1b" />
                 </ScatterChart>
               </ResponsiveContainer>
             </Card>
@@ -108,7 +107,7 @@ export const Page17SumOfSquares = () => {
         {/* Partitioning */}
         <Card className="border-2 border-gold p-6 bg-background mb-8">
           <h2 className="font-serif font-bold text-burgundy mb-4">Partitioning SST</h2>
-          <div className="bg-cream p-4 rounded border border-border text-center font-serif font-mono text-burgundy mb-4">
+          <div className="bg-cream p-4 rounded border border-border text-center font-mono text-burgundy mb-4">
             SST = SSB + SSW
           </div>
           <p className={`font-serif text-foreground mb-3 ${textSizeClass}`}>
@@ -117,18 +116,18 @@ export const Page17SumOfSquares = () => {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-4 bg-background border-2 border-burgundy rounded">
               <p className="font-serif font-semibold text-burgundy mb-2">SSB: Between-Group Sum of Squares</p>
-              <p className="font-serif font-mono text-sm text-burgundy mb-2">SSB = {SSB.toFixed(1)}</p>
+              <p className="font-mono text-sm text-burgundy mb-2">SSB = {SSB.toFixed(1)}</p>
               <p className={`font-serif text-foreground text-sm ${textSizeClass}`}>Variation due to differences between group means</p>
             </div>
             <div className="p-4 bg-background border-2 border-accent rounded">
               <p className="font-serif font-semibold text-accent mb-2">SSW: Within-Group Sum of Squares</p>
-              <p className="font-serif font-mono text-sm text-accent mb-2">SSW = {SSW.toFixed(1)}</p>
+              <p className="font-mono text-sm text-accent mb-2">SSW = {SSW.toFixed(1)}</p>
               <p className={`font-serif text-foreground text-sm ${textSizeClass}`}>Variation within each group</p>
             </div>
           </div>
 
           <div className="mt-4 p-4 bg-gold bg-opacity-20 rounded border border-gold">
-            <p className="font-serif font-mono text-burgundy text-center">
+            <p className="font-mono text-burgundy text-center">
               {SST.toFixed(1)} = {SSB.toFixed(1)} + {SSW.toFixed(1)}
             </p>
             <p className="font-serif text-xs text-center text-muted-foreground mt-2">Total = Between + Within</p>

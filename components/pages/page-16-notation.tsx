@@ -152,7 +152,7 @@ export const Page16Notation = () => {
           <h2 className="font-serif font-bold text-burgundy mb-4">Notation Reference</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <p className="font-serif font-semibold text-burgundy mb-2">Y_{'{ij}'}</p>
+              <p className="font-serif font-semibold text-burgundy mb-2">Y<sub>ij</sub></p>
               <p className={`font-serif text-foreground ${textSizeClass}`}>The jth observation in group i</p>
             </div>
             <div>

@@ -65,29 +65,61 @@ export const Page1TitlePage = () => {
 
       {/* Floating math symbols */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {['μ', 'σ', 'Σ'].map((symbol, idx) => (
-          <div
-            key={idx}
-            className={`absolute text-4xl text-gold opacity-30 animate-glow ${reduceMotionClass}`}
-            style={{
-              left: `${20 + idx * 30}%`,
-              top: `${30 + Math.sin(idx) * 20}%`,
-              animation: `drift 6s ease-in-out infinite`,
-              animationDelay: `${idx * 0.5}s`,
-            }}
-          >
-            {symbol}
-          </div>
-        ))}
+        {['μ', 'σ', 'Σ', 'α', 'β', 'χ²', 'F', '∑', 'x̄'].map((symbol, idx) => {
+          // Use deterministic positioning based on index to avoid hydration mismatch
+          const positions = [
+            { left: 15, top: 20, rotation: -5 },
+            { left: 75, top: 15, rotation: 8 },
+            { left: 25, top: 70, rotation: -3 },
+            { left: 85, top: 60, rotation: 6 },
+            { left: 10, top: 45, rotation: -7 },
+            { left: 60, top: 25, rotation: 4 },
+            { left: 40, top: 80, rotation: -2 },
+            { left: 70, top: 45, rotation: 5 },
+            { left: 30, top: 35, rotation: -4 }
+          ]
+          const position = positions[idx]
+          
+          return (
+            <div
+              key={idx}
+              className={`absolute text-3xl md:text-4xl text-gold opacity-20 ${reduceMotionClass}`}
+              style={{
+                left: `${position.left}%`,
+                top: `${position.top}%`,
+                animation: `floatAround${(idx % 3) + 1} ${8 + idx * 2}s ease-in-out infinite`,
+                animationDelay: `${idx * 0.7}s`,
+                transform: `rotate(${position.rotation}deg)`,
+              }}
+            >
+              {symbol}
+            </div>
+          )
+        })}
       </div>
 
-      {/* Scroll indicator */}
-      {showQuote && (
-        <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-glow ${reduceMotionClass}`}>
-          <div className="text-center text-sm text-muted-foreground font-serif">Click anywhere to continue</div>
-          <div className="mt-2 text-burgundy text-2xl">↓</div>
-        </div>
-      )}
+      <style jsx>{`
+        @keyframes floatAround1 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(50px, -30px) rotate(5deg); }
+          50% { transform: translate(-20px, -60px) rotate(-3deg); }
+          75% { transform: translate(-40px, 20px) rotate(7deg); }
+        }
+        
+        @keyframes floatAround2 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(-30px, 40px) rotate(-5deg); }
+          66% { transform: translate(40px, -20px) rotate(8deg); }
+        }
+        
+        @keyframes floatAround3 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          20% { transform: translate(30px, 50px) rotate(3deg); }
+          40% { transform: translate(-50px, 20px) rotate(-7deg); }
+          60% { transform: translate(20px, -40px) rotate(4deg); }
+          80% { transform: translate(-10px, -20px) rotate(-2deg); }
+        }
+      `}</style>
     </div>
   )
 }
