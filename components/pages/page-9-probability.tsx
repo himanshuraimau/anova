@@ -1,15 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
-import { InteractiveSlider } from '@/components/interactive-slider'
 
 export const Page9ProbabilityCalculations = () => {
   const { accessibility } = useAnova()
-  const [alpha, setAlpha] = useState(0.05)
-  const [numComparisons, setNumComparisons] = useState(3)
 
   const textSizeClass = {
     small: 'text-sm',
@@ -17,108 +14,108 @@ export const Page9ProbabilityCalculations = () => {
     large: 'text-lg',
   }[accessibility.textSize]
 
-  const probAllCorrect = Math.pow(1 - alpha, numComparisons)
-  const probAtLeastOneError = 1 - probAllCorrect
+  const alpha = 0.05
+  const numComparisons = 3
+  const probA = 1 - alpha // P(A) = 0.95
+  const probB = 1 - alpha // P(B) = 0.95
+  const probC = 1 - alpha // P(C) = 0.95
+  const probAllCorrect = probA * probB * probC // P(A ∩ B ∩ C) = 0.8573
+  const probAtLeastOneError = 1 - probAllCorrect // 1 - 0.8573 = 0.1426
 
   return (
-    <div className="min-h-screen bg-cream px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-serif font-bold text-burgundy mb-2">Probability Calculations</h1>
+        <h1 className="text-5xl font-serif font-bold text-primary mb-2">Probability Calculations</h1>
         <p className="text-muted-foreground font-serif mb-8">Understanding the error inflation</p>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          {/* Controls */}
-          <AnimatedContainer animation="slideInLeft">
-            <Card className="border-2 border-primary p-6 bg-background space-y-6">
+        {/* Main Content */}
+        <AnimatedContainer animation="fadeInUp" className="mb-8">
+          <Card className="border-2 border-primary p-6 bg-background">
+            <div className={`space-y-6 font-serif text-foreground ${textSizeClass}`}>
               <div>
-                <InteractiveSlider
-                  label="Per-Test α (significance level)"
-                  min={0.01}
-                  max={0.1}
-                  step={0.01}
-                  value={alpha}
-                  onChange={setAlpha}
-                  displayFormat={(v) => v.toFixed(3)}
-                />
+                <p className="mb-4">Let</p>
+                <div className="space-y-2 ml-4">
+                  <p>P(A) = P (Retain H₀ in test A | H₀ in test A is true)</p>
+                  <p>P(B) = P (Retain H₀ in test B | H₀ in test B is true)</p>
+                  <p>P(C) = P (Retain H₀ in test C | H₀ in test C is true)</p>
+                </div>
+                <p className="mt-4">Note that values of P(A) = P(B) = P(C) = 1 – α = 1 – 0.05 = 0.95.</p>
               </div>
 
-              <div>
-                <InteractiveSlider
-                  label="Number of Comparisons (m)"
-                  min={1}
-                  max={15}
-                  step={1}
-                  value={numComparisons}
-                  onChange={setNumComparisons}
-                />
-              </div>
-
-              <div className="space-y-3 p-4 bg-cream rounded border-2 border-border">
-                <div>
-                  <p className="font-serif text-xs text-muted-foreground">P(one test correct):</p>
-                  <p className="font-serif font-bold text-burgundy text-lg">1 - α = {(1 - alpha).toFixed(4)}</p>
-                </div>
-                <div className="border-t border-border pt-3">
-                  <p className="font-serif text-xs text-muted-foreground">P(all {numComparisons} tests correct):</p>
-                  <p className="font-serif font-bold text-burgundy text-lg">(1 - α)^m = {probAllCorrect.toFixed(4)}</p>
-                </div>
-                <div className="border-t border-border pt-3">
-                  <p className="font-serif text-xs text-muted-foreground">P(at least one error):</p>
-                  <p className="font-serif font-bold text-red-700 text-lg">{(probAtLeastOneError * 100).toFixed(2)}%</p>
-                </div>
-              </div>
-            </Card>
-          </AnimatedContainer>
-
-          {/* Visualization */}
-          <AnimatedContainer animation="fadeIn" delay={0.3}>
-            <div className="space-y-4">
-              {/* Bar showing error rate */}
-              <Card className="border-2 border-accent p-6 bg-background">
-                <h2 className="font-serif font-bold text-burgundy mb-4">Error Rate Visualization</h2>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-full bg-border rounded-full h-8 overflow-hidden">
-                      <div className="h-full bg-green-500 flex items-center justify-center text-xs font-bold text-white font-serif" style={{ width: `${probAllCorrect * 100}%` }}>
-                        {(probAllCorrect * 100).toFixed(1)}%
-                      </div>
-                      {probAtLeastOneError > 0 && (
-                        <div className="inline-block h-full bg-red-500 text-xs font-bold text-white font-serif" style={{ width: `${probAtLeastOneError * 100}%` }}>
-                          {(probAtLeastOneError * 100).toFixed(1)}%
-                        </div>
-                      )}
-                    </div>
+              <div className="bg-accent/10 p-4 rounded border-2 border-accent">
+                <p className="mb-3">The conditional probability of simultaneously retaining all three null hypotheses when they are true is:</p>
+                <div className="text-center my-4 py-3">
+                  <div className="text-xl font-serif font-mono text-primary">
+                    P(A ∩ B ∩ C) = 0.95 × 0.95 × 0.95 = 0.8573
                   </div>
-                  <p className="text-xs font-serif text-muted-foreground">
-                    <span className="text-green-600 font-bold">Green:</span> All tests correct {' '}
-                    <span className="text-red-600 font-bold">Red:</span> At least one error
-                  </p>
                 </div>
-              </Card>
+              </div>
 
-              {/* Interpretation */}
-              <Card className="border-2 border-gold p-4 bg-background">
-                <h3 className="font-serif font-bold text-burgundy mb-2">Interpretation</h3>
-                <p className={`font-serif text-foreground ${textSizeClass}`}>
-                  With {numComparisons} independent tests at α = {alpha.toFixed(3)}, there's a {(probAtLeastOneError * 100).toFixed(1)}% chance of at least one false positive.
+              <div>
+                <p className="mb-3">Now, consider the following null hypothesis:</p>
+                <div className="text-center my-4">
+                  <div className="text-xl font-serif font-mono text-primary">
+                    H₀: μ₀ = μ₁₀ = μ₂₀ &nbsp;&nbsp;&nbsp;&nbsp; (7.3)
+                  </div>
+                </div>
+                <p className="mt-4">
+                  If we retain the null hypothesis based on the three individual t-tests, then the significance or Type I error is not equal to the α-value, but much higher than α (Lunney, 1969; Siegel, 1990). For the case discussed above, if we retain the null hypothesis based on three individual tests, then the Type I error is:
                 </p>
-              </Card>
-            </div>
-          </AnimatedContainer>
-        </div>
+                <div className="text-center my-4 bg-red-50 p-4 rounded border-2 border-red-300">
+                  <div className="text-xl font-serif font-mono text-red-700 font-bold">
+                    1 - 0.8573 = 0.1426
+                  </div>
+                  <p className="mt-2 text-red-700 font-bold">That is, 14.26% instead of 5%!</p>
+                </div>
+              </div>
 
-        <Card className="border-2 border-gold p-6 bg-background">
-          <h3 className="text-lg font-serif font-bold text-burgundy mb-3">Bonferroni Correction</h3>
-          <p className={`font-serif text-foreground mb-3 ${textSizeClass}`}>
-            To maintain family-wise error rate at α, use adjusted significance level:
-          </p>
-          <div className="bg-cream p-3 rounded border border-border text-center font-serif font-mono text-burgundy mb-3">
-            α<sub>adjusted</sub> = α / m = {alpha.toFixed(3)} / {numComparisons} = {(alpha / numComparisons).toFixed(5)}
-          </div>
-          <p className={`font-serif text-foreground ${textSizeClass}`}>
-            But this is overly conservative. ANOVA provides a more powerful solution by testing all differences simultaneously.
-          </p>
-        </Card>
+              <div className="bg-primary/10 p-4 rounded border-2 border-primary">
+                <p className="mb-3">
+                  That is, when more than two groups are involved, checking the population parameter values simultaneously using t-tests is inappropriate since the Type I error will be estimated incorrectly. For <strong>n</strong> simultaneous comparisons, the probability of Type I error is:
+                </p>
+                <div className="text-center my-4 py-3">
+                  <div className="text-xl font-serif font-mono text-primary">
+                    1 - (1 - α)<sup>n</sup>
+                  </div>
+                </div>
+                <p className="mt-4">
+                  For five simultaneous comparisons, the Type I error will be approximately <strong>0.22</strong> (Kao and Green, 2008). For this reason, we use ANOVA whenever we need to compare three or more groups for population parameter values simultaneously.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </AnimatedContainer>
+
+        {/* Summary Box */}
+        <AnimatedContainer animation="fadeIn" delay={0.2}>
+          <Card className="border-2 border-accent p-6 bg-background">
+            <h3 className="text-lg font-serif font-bold text-primary mb-4">Key Formula</h3>
+            <div className="space-y-3">
+              <div className="bg-background p-4 rounded border border-border">
+                <p className="font-serif text-sm text-muted-foreground mb-2">For n simultaneous comparisons:</p>
+                <div className="text-center py-2">
+                  <div className="text-lg font-serif font-mono text-primary">
+                    Type I Error = 1 - (1 - α)<sup>n</sup>
+                  </div>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 mt-4">
+                <div className="bg-accent/10 p-3 rounded text-center">
+                  <p className="text-xs text-muted-foreground">n = 3</p>
+                  <p className="font-bold text-primary">14.26%</p>
+                </div>
+                <div className="bg-accent/10 p-3 rounded text-center">
+                  <p className="text-xs text-muted-foreground">n = 5</p>
+                  <p className="font-bold text-primary">~22%</p>
+                </div>
+                <div className="bg-accent/10 p-3 rounded text-center">
+                  <p className="text-xs text-muted-foreground">α = 0.05</p>
+                  <p className="font-bold text-primary">Per test</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </AnimatedContainer>
       </div>
     </div>
   )

@@ -5,7 +5,8 @@ import { useAnova } from '@/lib/anova-context'
 import { Card } from '@/components/ui/card'
 import { AnimatedContainer } from '@/components/animated-container'
 import { Button } from '@/components/ui/button'
-import { Download, RotateCcw } from 'lucide-react'
+import { Download, RotateCcw, Loader2, FileText } from 'lucide-react'
+import { PDFGenerator } from '@/lib/pdf-generator'
 
 const PAGE_TOPICS = [
   {
@@ -93,6 +94,7 @@ const PAGE_TOPICS = [
 export const Page18Summary = () => {
   const { accessibility, currentPage, setCurrentPage, resetAll } = useAnova()
   const [expandedTopic, setExpandedTopic] = useState<number | null>(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   const textSizeClass = {
     small: 'text-sm',
@@ -121,20 +123,43 @@ export const Page18Summary = () => {
     document.body.removeChild(element)
   }
 
+  const handleDownloadStudyNotesPDF = async () => {
+    setIsGeneratingPDF(true)
+    try {
+      // Fetch the study notes markdown file
+      const response = await fetch('/study-notes.md')
+      const markdownContent = await response.text()
+      
+      // Generate PDF
+      await PDFGenerator.generatePDF(markdownContent, {
+        title: 'Analysis of Variance (ANOVA) - Complete Study Notes',
+        backgroundColor: '#fffbeb',
+        textColor: '#292524',
+        primaryColor: '#991b1b',
+        accentColor: '#f59e0b',
+      })
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      alert('Failed to generate PDF. Please try again.')
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-cream px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-serif font-bold text-burgundy mb-2">Summary & Review</h1>
+        <h1 className="text-5xl font-serif font-bold text-primary mb-2">Summary & Review</h1>
         <p className="text-muted-foreground font-serif mb-8">Complete overview of ANOVA concepts</p>
 
         {/* Progress Overview */}
         <AnimatedContainer animation="fadeInUp" className="mb-8">
           <Card className="border-2 border-accent p-6 bg-background">
-            <h2 className="font-serif font-bold text-burgundy mb-4">Your Progress</h2>
+            <h2 className="font-serif font-bold text-primary mb-4">Your Progress</h2>
             <div className="mb-4">
               <div className="flex justify-between mb-2">
                 <span className="font-serif text-foreground">{currentPage} / 17 pages completed</span>
-                <span className="font-serif font-bold text-burgundy">{completionPercent.toFixed(0)}%</span>
+                <span className="font-serif font-bold text-primary">{completionPercent.toFixed(0)}%</span>
               </div>
               <div className="w-full h-3 bg-border rounded-full overflow-hidden">
                 <div
@@ -143,7 +168,7 @@ export const Page18Summary = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button onClick={handleReset} variant="outline" size="sm" className="font-serif">
                 <RotateCcw size={16} className="mr-2" />
                 Restart
@@ -152,6 +177,25 @@ export const Page18Summary = () => {
                 <Download size={16} className="mr-2" />
                 Export Notes
               </Button>
+              <Button 
+                onClick={handleDownloadStudyNotesPDF} 
+                disabled={isGeneratingPDF}
+                variant="default" 
+                size="sm" 
+                className="font-serif bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                {isGeneratingPDF ? (
+                  <>
+                    <Loader2 size={16} className="mr-2 animate-spin" />
+                    Generating PDF...
+                  </>
+                ) : (
+                  <>
+                    <FileText size={16} className="mr-2" />
+                    Download Study Notes PDF
+                  </>
+                )}
+              </Button>
             </div>
           </Card>
         </AnimatedContainer>
@@ -159,7 +203,7 @@ export const Page18Summary = () => {
         {/* Timeline of Topics */}
         <AnimatedContainer animation="slideInLeft" delay={0.2} className="mb-8">
           <Card className="border-2 border-primary p-6 bg-background">
-            <h2 className="font-serif font-bold text-burgundy mb-6">Complete Topic Timeline</h2>
+            <h2 className="font-serif font-bold text-primary mb-6">Complete Topic Timeline</h2>
             <div className="space-y-2">
               {PAGE_TOPICS.map((topic, idx) => (
                 <button
@@ -169,22 +213,22 @@ export const Page18Summary = () => {
                     currentPage === topic.page
                       ? 'border-accent bg-accent bg-opacity-20'
                       : idx < currentPage - 1
-                        ? 'border-gold bg-gold bg-opacity-10'
-                        : 'border-border hover:bg-cream'
+                        ? 'border-accent bg-accent bg-opacity-10'
+                        : 'border-border hover:bg-background'
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${
+                    <div className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${
                       currentPage === topic.page
                         ? 'bg-accent text-accent-foreground'
                         : idx < currentPage - 1
-                          ? 'bg-gold text-gold'
+                          ? 'bg-accent text-accent-foreground'
                           : 'bg-border text-foreground'
                     }`}>
                       {topic.page}
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-burgundy">{topic.title}</p>
+                      <p className="font-bold text-primary">{topic.title}</p>
                       <p className={`text-muted-foreground text-sm ${textSizeClass}`}>{topic.description}</p>
                     </div>
                   </div>
@@ -196,27 +240,27 @@ export const Page18Summary = () => {
 
         {/* Key Takeaways */}
         <AnimatedContainer animation="fadeIn" delay={0.4} className="mb-8">
-          <Card className="border-2 border-gold p-6 bg-background">
-            <h2 className="font-serif font-bold text-burgundy mb-4">Key Takeaways</h2>
+          <Card className="border-2 border-accent p-6 bg-background">
+            <h2 className="font-serif font-bold text-primary mb-4">Key Takeaways</h2>
             <ul className={`font-serif text-foreground space-y-3 ${textSizeClass}`}>
               <li className="flex gap-3">
-                <span className="text-gold font-bold">✓</span>
+                <span className="text-accent font-bold">✓</span>
                 <span><strong>Multiple Testing Problem:</strong> Running many t-tests inflates the family-wise error rate far above α.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-gold font-bold">✓</span>
+                <span className="text-accent font-bold">✓</span>
                 <span><strong>ANOVA Solution:</strong> Tests all group differences simultaneously while maintaining the error rate at α.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-gold font-bold">✓</span>
+                <span className="text-accent font-bold">✓</span>
                 <span><strong>Model Foundation:</strong> ANOVA partitions variation into between-group (SSB) and within-group (SSW) components.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-gold font-bold">✓</span>
+                <span className="text-accent font-bold">✓</span>
                 <span><strong>Mathematical Power:</strong> The F-ratio (MSB/MSW) provides an elegant test for overall equality of means.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-gold font-bold">✓</span>
+                <span className="text-accent font-bold">✓</span>
                 <span><strong>Practical Robustness:</strong> ANOVA is robust to assumption violations, especially with larger sample sizes.</span>
               </li>
             </ul>
@@ -224,8 +268,8 @@ export const Page18Summary = () => {
         </AnimatedContainer>
 
         {/* Next Steps */}
-        <Card className="border-2 border-burgundy bg-burgundy bg-opacity-10 p-6">
-          <h2 className="font-serif font-bold text-burgundy mb-4">Next Steps in Your Learning</h2>
+        <Card className="border-2 border-primary bg-primary bg-opacity-10 p-6">
+          <h2 className="font-serif font-bold text-primary mb-4">Next Steps in Your Learning</h2>
           <ul className={`font-serif text-foreground space-y-2 ${textSizeClass}`}>
             <li>• Practice implementing ANOVA with your own datasets</li>
             <li>• Explore post-hoc tests for pairwise comparisons (Tukey, Scheffé)</li>
