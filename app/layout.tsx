@@ -14,24 +14,6 @@ const _georgia = Merriweather({
 export const metadata: Metadata = {
   title: 'Interactive ANOVA Presentation',
   description: 'Explore Analysis of Variance through interactive visualizations and dynamic mathematics',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
 }
 
 export default function RootLayout({

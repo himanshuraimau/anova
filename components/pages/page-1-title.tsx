@@ -7,8 +7,16 @@ export const Page1TitlePage = () => {
   const { animationControls, accessibility } = useAnova()
   const [showQuote, setShowQuote] = useState(false)
   const [displayedQuote, setDisplayedQuote] = useState('')
+  const [showPresenters, setShowPresenters] = useState(false)
   
   const anova_quote = '"Analysis of variance is not a mathematical theorem, but rather a convenient method of arranging the arithmetic." — Ronald Fisher'
+  
+  const presenters = [
+    { name: 'Himanshu', id: '1SI23AD016' },
+    { name: 'Suraj', id: '1SI23AD057' },
+    { name: 'Jishnu', id: '1SI23CI017' },
+    { name: 'Kumarswami', id: '1SI23CI019' },
+  ]
 
   useEffect(() => {
     if (animationControls.skipAnimations) {
@@ -33,11 +41,24 @@ export const Page1TitlePage = () => {
     const interval = setInterval(() => {
       setDisplayedQuote(anova_quote.slice(0, index))
       index++
-      if (index > anova_quote.length) clearInterval(interval)
+      if (index > anova_quote.length) {
+        clearInterval(interval)
+        // Show presenters after quote is complete
+        setTimeout(() => {
+          setShowPresenters(true)
+        }, 500 / animationControls.speed)
+      }
     }, 30 / animationControls.speed)
 
     return () => clearInterval(interval)
   }, [showQuote, animationControls.speed])
+
+  // Show presenters immediately if animations are skipped
+  useEffect(() => {
+    if (animationControls.skipAnimations && showQuote && displayedQuote === anova_quote) {
+      setShowPresenters(true)
+    }
+  }, [animationControls.skipAnimations, showQuote, displayedQuote])
 
   const reduceMotionClass = accessibility.reduceMotion ? 'reduce-motion' : ''
   const textSizeClass = {
@@ -47,7 +68,7 @@ export const Page1TitlePage = () => {
   }[accessibility.textSize]
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-cream px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-cream px-4 py-8">
       {/* Title */}
       <h1 className={`text-6xl md:text-7xl font-serif font-bold text-burgundy mb-12 animate-fadeInUp ${reduceMotionClass}`}>
         Analysis of Variance
@@ -56,11 +77,46 @@ export const Page1TitlePage = () => {
       {/* Subtitle */}
       {showQuote && (
         <blockquote
-          className={`text-center max-w-2xl mb-20 italic text-lg md:text-xl text-dark-brown animate-fadeIn ${reduceMotionClass} ${textSizeClass}`}
+          className={`text-center max-w-2xl mb-12 italic text-lg md:text-xl text-dark-brown animate-fadeIn ${reduceMotionClass} ${textSizeClass}`}
         >
           {displayedQuote}
           {displayedQuote.length < anova_quote.length && <span className="animate-glow">|</span>}
         </blockquote>
+      )}
+
+      {/* Presented By Section */}
+      {showPresenters && (
+        <div className={`mt-8 w-full max-w-3xl animate-fadeInUp ${reduceMotionClass}`}>
+          <div className="text-center mb-8">
+            <p className="text-xl md:text-2xl font-serif text-gold font-semibold tracking-wide mb-2">
+              Presented by
+            </p>
+            <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+            {presenters.map((presenter, idx) => (
+              <div
+                key={idx}
+                className="group relative"
+                style={{
+                  animationDelay: `${idx * 100}ms`,
+                }}
+              >
+                <div className="bg-white/60 backdrop-blur-sm rounded-lg p-5 shadow-lg border border-gold/20 hover:border-gold/40 transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
+                  <div className="flex flex-col items-center text-center">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-burgundy mb-2 group-hover:text-gold transition-colors duration-300">
+                      {presenter.name}
+                    </h3>
+                    <p className="text-sm md:text-base text-dark-brown/70 font-mono tracking-wider">
+                      {presenter.id}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Floating math symbols */}
